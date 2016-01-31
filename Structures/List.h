@@ -12,7 +12,7 @@ protected:
 	std::shared_ptr<Node<T>> m_pHead = nullptr;
 	std::shared_ptr<Node<T>> m_pTail = nullptr;
 
-	std::shared_ptr<Node<T>> m_pIterator;
+	std::shared_ptr<Node<T>> m_pIterator = nullptr;
 
 	int m_listSize = 0;
 
@@ -33,11 +33,40 @@ public:
 
 	virtual ~List()	{}
 
-	const T& GetIteratorData() { return m_pIterator->GetData(); }
+	const T& GetIteratorData() 
+	{ 
+		if (m_pIterator)
+			return m_pIterator->GetData();
+		else 
+			throw std::out_of_range("List Is Empty"); }
 
-	std::shared_ptr<Node<T>> GetIteratorPointer() { return m_pIterator; }
+	std::shared_ptr<Node<T>> GetIteratorPointer() { 
+		if (m_pIterator)
+			return m_pIterator;
+		else
+			throw std::out_of_range("List is Empty");
+	}
 
-	std::shared_ptr<Node<T>> IteratorNext() { return m_pIterator = m_pIterator->GetNext(); }
+	std::shared_ptr<Node<T>> IteratorNext() {
+		if (m_pIterator)
+			return m_pIterator = m_pIterator->GetNext();
+		else
+			throw std::out_of_range("List is Empty");
+	}
+		
+	void IteratorRestart() {	m_pIterator = m_pHead; }
+	
+	void SetIteratorAtIndex(int index)
+	{
+		if (!m_pHead) throw std::out_of_range("List is empty");
+		if (index > Size()) throw  std::out_of_range("Index out of range");
+
+		do
+		{
+			if (index) m_pIterator = m_pIterator->GetNext();
+
+		} while (--index);
+	}
 	
 	int Size() const { return m_listSize; }
 	
@@ -73,7 +102,7 @@ public:
 	virtual void RemoveAt(int index)
 	{
 		
-
+		if (!m_pHead) throw std::out_of_range("List is Empty");
 		if (index > Size())
 			throw std::out_of_range("Index is out of list range");
 		--m_listSize;
@@ -87,11 +116,12 @@ public:
 		}
 	}
 
-	const T& Pop() {
+	const T& Pop() 
+	{
 		if (Size())
 			--m_listSize;
 		else
-			std::out_of_range("List is empty");
+			throw std::out_of_range("List is empty");
 
 		T dataTemp = m_pHead->GetData();
 		if (!Size())
@@ -108,7 +138,7 @@ public:
 		if(Size())
 			--m_listSize;
 		else
-			std::out_of_range("List is empty");
+			throw std::out_of_range("List is empty");
 		
 		T dataTemp = m_pTail->GetData();
 		if (!Size())

@@ -104,7 +104,7 @@ namespace UnitTests
 				Assert::IsTrue(true);
 			}
 		}
-		TEST_METHOD(List_PopMethodTest)
+		TEST_METHOD(List_PopMethodReturnsValueOfFirstMember)
 		{
 			try {
 				List<int> list;
@@ -120,12 +120,28 @@ namespace UnitTests
 			}
 		
 		}
-		TEST_METHOD(List_PopDequeueTest)
+
+		TEST_METHOD(List_PopMethodThrowsErrorIfListIsEmpty)
+		{
+			try {
+				List<int> list;
+				list.Pop();
+				Assert::Fail();
+			}
+			catch (std::out_of_range&)
+			{
+				Assert::IsTrue(true);
+			}
+
+		}
+		TEST_METHOD(List_DequeueReturnsValoueOfLastMember)
 		{
 			try {
 				List<int> list;
 				list.Append(5);
-				Assert::AreEqual(5, list.Dequeue());
+				list.Append(10);
+				list.Append(15);
+				Assert::AreEqual(15, list.Dequeue());
 				Assert::AreEqual(0, list.Size());
 			}
 			catch (const std::out_of_range&)
@@ -133,6 +149,73 @@ namespace UnitTests
 				Assert::Fail();
 			}
 
+		}
+
+		TEST_METHOD(List_DequeueMethodThrowsErrorIfListIsEmpty)
+		{
+			try {
+				List<int> list;
+				list.Dequeue();
+				Assert::Fail();
+			}
+			catch (std::out_of_range&)
+			{
+				Assert::IsTrue(true);
+			}
+
+		}
+
+		TEST_METHOD(List_IteratorReturnsFirstMemberOfList)
+		{
+			List<int> list;
+			list.Append(5);
+			Assert::AreEqual(5,list.GetIteratorData());
+		}
+
+		TEST_METHOD(List_IteratorThrowsExceptionForNotInitLists)
+		{
+			try {
+				List<int> list;
+				list.GetIteratorData();
+			}
+			catch (std::out_of_range&)
+			{
+				Assert::IsTrue(true);
+			}
+		}
+
+		TEST_METHOD(List_IteratorNextReturnsDataFromSecondMember)
+		{
+			List<int> list;
+			list.Append(5);
+			list.Append(10);
+			list.Append(15);
+			Assert::AreEqual(10, list.IteratorNext()->GetData());
+		}
+
+		TEST_METHOD(List_IteratorThrowExceptionForNonInitLIst)
+		{
+			try {
+				List<int> list;
+				list.IteratorNext();
+				Assert::Fail();
+			}
+			catch (std::out_of_range&)
+			{
+				Assert::IsTrue(true);
+			}
+		}
+
+		TEST_METHOD(List_SetIteratorAtIndexSetsIteratorToSecondNode)
+		{
+			List<int> list;
+			list.Append(5);
+			list.Append(10);
+			list.Append(15);
+
+			list.SetIteratorAtIndex(2);
+
+			Assert::AreEqual(15, list.GetIteratorData());
 		}
 
 	};

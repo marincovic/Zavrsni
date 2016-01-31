@@ -44,7 +44,7 @@ namespace UnitTests
 			list.Append(5);
 			list.Append(10);
 			list.RemoveAt(1);
-			Assert::AreEqual(10, list.GetAt(1));
+			Assert::AreEqual(5, list.GetAt(1));
 		}
 
 		TEST_METHOD(DoubleList_RemoveAtMethodForLastIndexRemovesLastElement)
@@ -76,8 +76,8 @@ namespace UnitTests
 			list.Append(1);
 			list.InsertAt(1, 5);
 			Assert::AreEqual(2, list.Size());
-			Assert::AreEqual(5, list.GetAt(1));
-			Assert::AreEqual(1, list.GetAt(2));
+			Assert::AreEqual(1, list.GetAt(1));
+			Assert::AreEqual(5, list.GetAt(2));
 		}
 
 		TEST_METHOD(DoubleList_InsertAtMethodForLastIndexInsertsElementToTheEndOfList)
@@ -86,8 +86,8 @@ namespace UnitTests
 			list.Append(1);
 			list.InsertAt(1, 5);
 			Assert::AreEqual(2, list.Size());
-			Assert::AreEqual(5, list.GetAt(1));
-			Assert::AreEqual(1, list.GetAt(2));
+			Assert::AreEqual(1, list.GetAt(1));
+			Assert::AreEqual(5, list.GetAt(2));
 		}
 
 		TEST_METHOD(DoubleList_InsertAtMethodThrowsExceptionForInvalidIndex)
@@ -97,7 +97,7 @@ namespace UnitTests
 				DoubleList<int> list;
 				list.Append(1);
 				list.InsertAt(5, 5);
-				Assert::Fail;
+				Assert::Fail();
 			}
 			catch (const std::out_of_range&)
 			{

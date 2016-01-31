@@ -27,10 +27,7 @@ public:
 		{
 			if (index) walkerNode = walkerNode->GetNext();
 			else
-			{
 				return walkerNode->GetData();
-			}
-
 		}
 
 	}
@@ -63,33 +60,28 @@ public:
 			++m_listSize;
 			return;
 		}
-		if (index > Size()) std::out_of_range("Index out of range");
+		if (index > Size()) throw std::out_of_range("Index out of range");
 		
 		else
 		{
-			if (index == 1)
-			{
-				DoubleNode<T>* newNode = new DoubleNode<T>{ value,m_pHead,nullptr };
-				m_pHead->SetPrevious(newNode);
-				m_pHead = newNode;
-				++m_listSize; 
-				return;
-			}
-
+			
 			DoubleNode<T>* walkerNode = m_pHead;
-			--index;//index se umanjuje kako bi se racunanje pozicije prebacino na 0-base
-			while (--index)
+			
+			do
 			{
-				if (index) walkerNode=walkerNode->GetNext();
+				if (index-1) walkerNode=walkerNode->GetNext();
 				else
 				{
 					DoubleNode<T>* newNode = new DoubleNode<T>( value,walkerNode,walkerNode->GetNext() );
-					walkerNode->GetNext()->SetPrevious(newNode);
 					walkerNode->SetNext(newNode);
+					if (newNode->GetNext())
+						newNode->GetNext()->SetPrevious(newNode);
+					else
+						m_pTail = newNode;
 					++m_listSize;
 					return;
 				}
-			}
+			} while (index--);
 		}
 	}
 
@@ -100,8 +92,8 @@ public:
 
 		if (index > Size())
 			throw std::out_of_range("Index out of range");
-
-		if (index == 1)
+		--m_listSize;
+		if (index == 0)
 		{
 			DoubleNode<T>* toBeRemoved = m_pHead;
 			m_pHead = m_pHead->GetNext();
@@ -109,20 +101,22 @@ public:
 		}
 		else
 		{
-			--index;
 			DoubleNode<T>* walkerNode = m_pHead;
-			while (--index)
+			do
 			{
-				if (index) walkerNode = walkerNode->GetPrevious();
+				if (index-1) walkerNode = walkerNode->GetPrevious();
 				else 
 				{
 					DoubleNode<T>* toBeRemoved = walkerNode->GetNext();
 					walkerNode->SetNext(toBeRemoved->GetNext());
-					toBeRemoved->GetNext()->SetPrevious(walkerNode);
+					if (toBeRemoved->GetNext())
+						toBeRemoved->GetNext()->SetPrevious(walkerNode);
+					else
+						m_pTail = toBeRemoved->GetPrevious();
 					delete toBeRemoved;
 					return;
 				}
-			}
+			} while (index--);
 		}
 	}
 
