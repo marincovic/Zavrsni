@@ -104,5 +104,36 @@ namespace UnitTests
 				Assert::IsTrue(true);
 			}
 		}
+		TEST_METHOD(List_PopMethodTest)
+		{
+			try {
+				List<int> list;
+				list.Append(5);
+				list.Append(4);
+				list.Append(3);
+				Assert::AreEqual(5, list.Pop());
+				Assert::AreEqual(2, list.Size());
+			}
+			catch (const std::out_of_range&)
+			{
+				Assert::Fail();
+			}
+		
+		}
+		TEST_METHOD(List_PopDequeueTest)
+		{
+			try {
+				List<int> list;
+				list.Append(5);
+				Assert::AreEqual(5, list.Dequeue());
+				Assert::AreEqual(0, list.Size());
+			}
+			catch (const std::out_of_range&)
+			{
+				Assert::Fail();
+			}
+
+		}
+
 	};
 }
